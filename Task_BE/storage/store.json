@@ -1,0 +1,85 @@
+{
+  "tasks": [
+    {
+      "id": 2,
+      "userId": 2,
+      "name": "Karel",
+      "done": false,
+      "details": "Tost"
+    },
+    {
+      "id": 3,
+      "userId": 2,
+      "name": "Karel",
+      "done": false,
+      "details": "Tost"
+    },
+    {
+      "id": 4,
+      "userId": 2,
+      "name": "Karel",
+      "done": false,
+      "details": "Tost"
+    },
+    {
+      "id": 6,
+      "userId": 1,
+      "name": "Karel",
+      "done": false,
+      "details": "Tost"
+    },
+    {
+      "id": 7,
+      "userId": 3,
+      "name": "Varlos Karlos Sasos",
+      "done": false,
+      "details": "Tost",
+      "taskId": 7
+    },
+    {
+      "id": 8,
+      "userId": 3,
+      "name": "Varlos Karlos",
+      "done": true,
+      "details": "Tost",
+      "taskId": 8
+    },
+    {
+      "id": 9,
+      "userId": 2,
+      "name": "Karel",
+      "done": false,
+      "details": "Tost"
+    },
+    {
+      "id": 10,
+      "userId": 2,
+      "name": "Karel",
+      "done": false,
+      "details": "Tost"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "Bambino",
+      "role": "user",
+      "password": "GGGG",
+      "apiToken": "user_token1"
+    },
+    {
+      "id": 2,
+      "username": "God",
+      "role": "admin",
+      "password": "Admin",
+      "apiToken": "user_token2"
+    },
+    {
+      "id": 3,
+      "username": "Frajer",
+      "role": "user",
+      "password": "123",
+      "apiToken": "user_token3"
+    }
+  ]
+}
