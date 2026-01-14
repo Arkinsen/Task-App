@@ -91,7 +91,6 @@ export const taskService = {
         return updateTaskByID({ ...taskUpadte, id: taskId });
       }
     }
-
     return false;
   },
 

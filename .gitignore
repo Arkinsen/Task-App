@@ -4,3 +4,4 @@ storage/store.json
 *.log
 .vscode/
 .DS_Store
+.env
