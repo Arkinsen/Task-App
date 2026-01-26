@@ -2,7 +2,12 @@ import { findUserByID, updateUserToken, User } from "../user/user.model.js";
 import { storeData } from "../../store.js";
 import { findByUsername } from "../user/user.model.js";
 
-export function login(username: string, password: string): string | undefined {
+export type userData = {
+  token: string,
+  user: Omit<User, "password">
+}
+
+export function login(username: string, password: string): userData | undefined {
   const userToLogin = findByUsername(username);
 
   console.log("userToLogin: " + userToLogin?.username);
@@ -19,6 +24,14 @@ export function login(username: string, password: string): string | undefined {
 
   console.log("userToLogin: " + userToLogin?.apiToken);
 
-  //píčovina, že musím ten objekt vracet takhle updatnutý :((((
-  return newToken;
+
+  //Ať mi vrací celého usera, ale bez passwordu
+  const {password: pass, ...userWithoutPassword} = userToLogin;
+
+  const userData : userData = {
+    token: newToken,
+    user: userWithoutPassword
+  }
+
+  return userData;
 }

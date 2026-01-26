@@ -3,8 +3,11 @@ import { taskRouter } from "./components/task/task.routes.js";
 import { authRouter } from "./components/Auth/auth.routes.js";
 import { userRouter } from "./components/user/user.routes.js";
 import { authMiddleware } from "./components/Auth/auth.middleware.js";
+import cors from "cors";
 
 export const app = express();
+
+app.use(cors())
 app.use(express.json());
 
 app.get("/health", (_req, res) => res.send("OK"));

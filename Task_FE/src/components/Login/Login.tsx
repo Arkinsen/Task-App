@@ -8,6 +8,9 @@ export function Login() {
   const [submitProcces, setSubmitProcces] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
+    try {
+      
+    
     e.preventDefault(); // Stopne obnovení stránky
 
     const response = await fetch("http://localhost:3000/auth/login", {
@@ -15,8 +18,17 @@ export function Login() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ username: setUsername, password: setPassword }),
+      body: JSON.stringify({ username, password }),
     });
+
+    const data = await response.json();
+
+    console.log(data);
+
+    } catch (error) {
+      console.log(error);
+      
+    }
   };
 
   return (
@@ -25,11 +37,13 @@ export function Login() {
       <input
         type="text"
         placeholder="username"
+        id="username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
       />
       <input
         type="password"
+        id="password"
         placeholder="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
