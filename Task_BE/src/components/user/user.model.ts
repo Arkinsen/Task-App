@@ -2,12 +2,13 @@ import { storeData } from "../../store.js";
 
 let nextId = 1;
 
+//UserToken by se měl asi pak přesunout jinam, ať není úplně součástí? 
 export type User = {
   id: number;
   username: string;
   role: "admin" | "user";
   password: string;
-  apiToken: string | undefined;
+  userToken: string | undefined;
 };
 
 function assignID(): number {
@@ -25,7 +26,7 @@ export function createNewUser(username: string, password: string): User {
     username,
     role: "user",
     password,
-    apiToken: undefined,
+    userToken: undefined,
   };
 
   storeData.setState({ users: [...storeData.users, newUser] });
@@ -92,7 +93,7 @@ export function updateUserToken(userId: number, token: string): boolean {
     if (user.id === userId) {
       updated = true;
       console.log("UpdateUserToken " + user.username);
-      return { ...user, apiToken: token };
+      return { ...user, userToken: token };
     }
     return user;
   });
@@ -106,7 +107,7 @@ export function updateUserToken(userId: number, token: string): boolean {
 
 export function findUserByToken(token: string): User | undefined {
   const searchedUser = storeData.users.find((user) => {
-    return user.apiToken === token;
+    return user.userToken === token;
   });
 
   if (!searchedUser) {

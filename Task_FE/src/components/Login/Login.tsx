@@ -1,7 +1,12 @@
 import { useState } from "react";
 import "./login.css";
 
-export function Login() {
+type AuthProps = {
+  setToken: any
+  setUser: any
+}
+
+export function Login({setToken, setUser}: AuthProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -9,25 +14,33 @@ export function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
+      e.preventDefault(); // Stopne obnovení stránky...prej ZEPTAT SE 
+
+      const response = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      const { userToken, user } = data
+
+
+      localStorage.setItem("AuthToken", userToken);
+      localStorage.setItem("AuthToken", JSON.stringify(user));
+
+      setToken(userToken);
+      setUser(user);
       
-    
-    e.preventDefault(); // Stopne obnovení stránky
-
-    const response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-
-    console.log(data);
 
     } catch (error) {
       console.log(error);
-      
+
     }
   };
 

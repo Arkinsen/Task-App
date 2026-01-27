@@ -65,21 +65,21 @@
       "username": "Bambino",
       "role": "user",
       "password": "GGGG",
-      "apiToken": "user_token1"
+      "userToken": "user_token1"
     },
     {
       "id": 2,
       "username": "God",
       "role": "admin",
       "password": "Admin",
-      "apiToken": "user_token2"
+      "userToken": "user_token2"
     },
     {
       "id": 3,
       "username": "Frajer",
       "role": "user",
       "password": "123",
-      "apiToken": "user_token3"
+      "userToken": "user_token3"
     }
   ]
 }

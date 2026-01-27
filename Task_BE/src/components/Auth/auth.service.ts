@@ -3,8 +3,8 @@ import { storeData } from "../../store.js";
 import { findByUsername } from "../user/user.model.js";
 
 export type userData = {
-  token: string,
-  user: Omit<User, "password">
+  userToken: string,
+  user: Omit<User, "password" | "userToken">
 }
 
 export function login(username: string, password: string): userData | undefined {
@@ -22,14 +22,14 @@ export function login(username: string, password: string): userData | undefined 
 
   updateUserToken(userToLogin.id, newToken);
 
-  console.log("userToLogin: " + userToLogin?.apiToken);
+  console.log("userToLogin: " + userToLogin?.userToken);
 
 
   //Ať mi vrací celého usera, ale bez passwordu
   const {password: pass, ...userWithoutPassword} = userToLogin;
 
   const userData : userData = {
-    token: newToken,
+    userToken: newToken,
     user: userWithoutPassword
   }
 
