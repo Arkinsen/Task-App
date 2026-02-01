@@ -76,7 +76,7 @@ export function findUserByID(id: number): User | undefined {
 
 export function findByUsername(username: string): User | undefined {
   const searchedUser = storeData.users.find((user) => {
-    return user.username === username;
+    return user.username.toLowerCase().trim() === username.toLowerCase().trim();
   });
 
   if (!searchedUser) {

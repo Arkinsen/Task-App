@@ -1,28 +1,37 @@
 import { useState } from "react";
 import "./login.css";
+import {type User} from "../../App"
 
 type AuthProps = {
-  setToken: any
-  setUser: any
+  setToken: (token: string | null) => void,
+  setUser: (user: User | undefined) => void
 }
 
 export function Login({setToken, setUser}: AuthProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const [submitProcces, setSubmitProcces] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     try {
-      e.preventDefault(); // Stopne obnovení stránky...prej ZEPTAT SE 
+      e.preventDefault(); // Stopne obnovení stránky...prej
+      setError(null)
+
 
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username: username.toLowerCase().trim(), password }),
       });
+
+      if (!response.ok) {
+        setError(response.statusText)
+        return
+      }
 
       const data = await response.json();
 
@@ -32,7 +41,7 @@ export function Login({setToken, setUser}: AuthProps) {
 
 
       localStorage.setItem("AuthToken", userToken);
-      localStorage.setItem("AuthToken", JSON.stringify(user));
+      localStorage.setItem("User", JSON.stringify(user));
 
       setToken(userToken);
       setUser(user);
@@ -47,6 +56,7 @@ export function Login({setToken, setUser}: AuthProps) {
   return (
     <form onSubmit={handleSubmit}>
       <h2>login</h2>
+      <div>{error ? <>{error}</> : null}</div>
       <input
         type="text"
         placeholder="username"
