@@ -52,10 +52,11 @@ export function Login({ setToken, setUser }: AuthProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="loginForm">
       <h2>Login</h2>
       <div className="error-div ">{error ? <>{error}</> : null}</div>
       <input
+        className="loginInputs"
         type="text"
         placeholder="username"
         id="username"
@@ -63,6 +64,7 @@ export function Login({ setToken, setUser }: AuthProps) {
         onChange={(e) => setUsername(e.target.value)}
       />
       <input
+        className="loginInputs"
         type="password"
         id="password"
         placeholder="password"

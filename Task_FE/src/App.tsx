@@ -8,6 +8,13 @@ export type User = {
   role: "admin" | "user";
 };
 
+export type Task = {
+  id: number;
+  name: string;
+  details: string;
+  done: boolean;
+};
+
 function App() {
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem("AuthToken");
@@ -48,12 +55,13 @@ function App() {
     <div className="app-container">
       {token ? (
         <>
-          {/* Horní lišta */}
+          {/* navbar */}
           <nav className="navbar">
             <button onClick={toggleDropdown} className="menu-trigger">
               Menu ☰
             </button>
 
+            {/*Stejný jako dropdown ? <></> : null*/}
             {dropDown && (
               <div className="dropdown-menu">
                 <span className="user-info">

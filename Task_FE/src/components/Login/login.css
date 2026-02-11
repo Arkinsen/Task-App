@@ -24,13 +24,6 @@ form {
   margin-right: auto;
 }
 
-input {
-  margin: 10px;
-  text-align: left;
-  padding: 10px;
-  border: 0px;
-}
-
 .loginButton {
   margin: 2rem;
   background-color: rgb(68, 68, 68);
@@ -41,4 +34,27 @@ input {
 
 .loginButton:hover {
   transform: scale(1.1);
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  background-color: gray;
+  padding: 25px 100px 25px 100px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.loginInputs {
+  height: 30px;
+  font-size: 18px;
+  width: 300px;
+  max-width: 350px;
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  margin: 10px;
+  text-align: left;
+  padding: 10px;
 }
