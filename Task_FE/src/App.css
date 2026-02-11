@@ -1,42 +1,96 @@
+/* 1. Resetujeme základní okraje prohlížeče, aby nikde nezavazely */
+html,
+body,
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #1a1a1a; /* Tmavé pozadí pro celou stránku */
+  color: white;
+  font-family: sans-serif;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* 2. Hlavní kontejner aplikace */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Přes celou výšku obrazovky */
+  width: 100%;
+  box-sizing: border-box;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* 3. Horní lišta (Navbar) */
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  align-content: center;
+  background-color: #242424;
+  position: relative;
+  border-bottom: 1px solid #333;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.menu-trigger {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.card {
-  padding: 2em;
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 60px;
+  right: 2rem;
+  background: #333;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 8px;
+  z-index: 10;
 }
 
-.read-the-docs {
-  color: #888;
+/* 4. Nadpis pod menu */
+h1 {
+  padding: 1rem 2rem;
+  margin: 0;
+}
+
+/* 5. Dashboard - tohle je to klíčové pro rozdělení sloupců */
+.dashboard {
+  display: flex;
+  flex: 1; /* Tohle zajistí, že dashboard vyplní zbytek svislého místa */
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 6. Styl pro panely se seznamem a detailem */
+.task-list-panel,
+.task-detail-panel {
+  flex: 1; /* Každý panel zabere přesně polovinu šířky */
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #444;
+
+  /* Volitelné: Aby se uvnitř panelu dalo skrolovat, kdyby tam bylo moc úkolů */
+  overflow-y: auto;
+}
+
+.task-list-panel h3,
+.task-detail-panel h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #555;
+  padding-bottom: 10px;
+}
+
+/* Tlačítka */
+button {
+  cursor: pointer;
+  padding: 8px 12px;
 }

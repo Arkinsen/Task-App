@@ -1,37 +1,39 @@
-import { findUserByID, updateUserToken, User } from "../user/user.model.js";
-import { storeData } from "../../store.js";
-import { findByUsername } from "../user/user.model.js";
+import { findUserByID, updateUserToken, User } from '../user/user.model.js'
+import { storeData } from '../../store.js'
+import { findByUsername } from '../user/user.model.js'
 
 export type userData = {
-  userToken: string,
-  user: Omit<User, "password" | "userToken">
+  userToken: string
+  user: Omit<User, 'password' | 'userToken'>
 }
 
-export function login(username: string, password: string): userData | undefined {
-  const userToLogin = findByUsername(username);
+export function login(
+  username: string,
+  password: string
+): userData | undefined {
+  const userToLogin = findByUsername(username)
 
-  console.log("userToLogin: " + userToLogin?.username);
+  console.log('userToLogin: ' + userToLogin?.username)
 
-  if (!userToLogin) return;
+  if (!userToLogin) return
 
   if (userToLogin.password !== password) {
-    return;
+    return
   }
 
-  const newToken = "user_token" + userToLogin.id;
+  const newToken = 'user_token' + userToLogin.id
 
-  updateUserToken(userToLogin.id, newToken);
+  updateUserToken(userToLogin.id, newToken)
 
-  console.log("userToLogin: " + userToLogin?.userToken);
-
+  console.log('userToLogin: ' + userToLogin?.userToken)
 
   //Ať mi vrací celého usera, ale bez passwordu
-  const {password: pass, ...userWithoutPassword} = userToLogin;
+  const { password: pass, ...userWithoutPassword } = userToLogin
 
-  const userData : userData = {
+  const userData: userData = {
     userToken: newToken,
-    user: userWithoutPassword
+    user: userWithoutPassword,
   }
 
-  return userData;
+  return userData
 }
