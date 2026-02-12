@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import "./App.css";
 import { Login } from "./components/Login/Login";
@@ -19,6 +19,32 @@ function App() {
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem("AuthToken");
   });
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    const fetchUserTasks = async () => {
+      //Asi pak lepší řešit přes cookies?
+      const response = await fetch("http://localhost:3000/task/", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          /*To je chujovina, takhle psát bearer růčo...*/
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      if (!response.ok) {
+        console.log(response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+
+      setTasks(data);
+    };
+    fetchUserTasks();
+  }, [token]);
 
   //bez tohodle se někdy všechno rozbije a vyskočí error,
   //že tahá něco z local storage, i když je prázdný a neměl by
@@ -87,7 +113,21 @@ function App() {
           <div className="dashboard">
             <div className="task-list-panel">
               <h3>Seznam úkolů</h3>
-              {/* Tady později bude seznam */}
+
+              {tasks.length !== 0 ? (
+                <>
+                  <div>
+                    {tasks.map((task) => (
+                      <div key={task.id}>
+                        <input type="checkbox" />
+                        {task.name}
+                      </div>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <p>You have no task yet!</p>
+              )}
             </div>
 
             <div className="task-detail-panel">
