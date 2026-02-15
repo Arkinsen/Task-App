@@ -113,7 +113,9 @@ taskRouter.patch("/toggle/:id", async (req, res) => {
     // ZMĚNA: Posíláme ID uživatele.
     toggleDone(id);
 
-    return res.status(204);
+    console.log("v toggle pŕepínám task")
+
+    return res.status(204).send();
   } catch (error: any) {
     return res.status(400).json({ message: error.message });
   }

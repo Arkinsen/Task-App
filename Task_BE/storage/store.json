@@ -32,7 +32,7 @@
       "id": 7,
       "userId": 3,
       "name": "Varlos Karlos Sasos",
-      "done": false,
+      "done": true,
       "details": "Tost",
       "taskId": 7
     },
@@ -62,7 +62,7 @@
       "id": 11,
       "userId": 3,
       "name": "Frajeruv task",
-      "done": false,
+      "done": true,
       "details": "Hodně epic detaily"
     }
   ],

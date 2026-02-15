@@ -99,6 +99,7 @@ export function toggleDone(id: number): boolean {
       udpated = true;
       return { ...task, done: !task.done };
     }
+    console.log(task)
     return task;
   });
 

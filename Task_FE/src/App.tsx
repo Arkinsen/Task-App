@@ -46,6 +46,31 @@ function App() {
     fetchUserTasks();
   }, [token]);
 
+  const setTaskDone = async (idTask: number) => {
+    console.log("1. Začínám fetch...");
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/task/toggle/${idTask}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json", // Pro jistotu přidáme i typ obsahu
+            Authorization: "Bearer " + token,
+          },
+        },
+      );
+      setTasks(
+        tasks.map((task) => {
+          return task.id === idTask ? { ...task, done: !task.done } : task;
+        }),
+      );
+      console.log("2. Fetch dokončen!", response.status); // <--- Dostaneme se sem?
+    } catch (error) {
+      console.error("3. CHYBA při fetchi:", error); // <--- Nebo skončíme tady?
+    }
+  };
+
   //bez tohodle se někdy všechno rozbije a vyskočí error,
   //že tahá něco z local storage, i když je prázdný a neměl by
   const [user, setUser] = useState<User | undefined>(() => {
@@ -60,7 +85,6 @@ function App() {
     } catch (error) {
       console.warn("Chyba při načítání uživatele, mažu poškozená data.");
       localStorage.removeItem("User");
-      return undefined;
     }
   });
 
@@ -119,7 +143,11 @@ function App() {
                   <div>
                     {tasks.map((task) => (
                       <div key={task.id}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          onChange={() => setTaskDone(task.id)}
+                          checked={task.done}
+                        />
                         {task.name}
                       </div>
                     ))}
