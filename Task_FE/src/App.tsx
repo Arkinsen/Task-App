@@ -16,11 +16,15 @@ export type Task = {
 };
 
 function App() {
+  {
+    /* STATES */
+  }
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem("AuthToken");
   });
-
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const [dropDown, setDropDown] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -55,7 +59,7 @@ function App() {
         {
           method: "PATCH",
           headers: {
-            "Content-Type": "application/json", // Pro jistotu přidáme i typ obsahu
+            "Content-Type": "application/json",
             Authorization: "Bearer " + token,
           },
         },
@@ -87,8 +91,6 @@ function App() {
       localStorage.removeItem("User");
     }
   });
-
-  const [dropDown, setDropDown] = useState<boolean>(false);
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
@@ -148,7 +150,9 @@ function App() {
                           onChange={() => setTaskDone(task.id)}
                           checked={task.done}
                         />
-                        {task.name}
+                        <span onClick={() => setActiveTask(task)} style={{ cursor: 'pointer' }}>
+                          {task.name}
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -161,6 +165,7 @@ function App() {
             <div className="task-detail-panel">
               <h3>Detail úkolu</h3>
               {/* Tady později bude detail */}
+              {activeTask && <p>{activeTask.details}</p>}
             </div>
           </div>
         </>
