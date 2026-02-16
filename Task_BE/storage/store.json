@@ -29,22 +29,6 @@
       "details": "Tost"
     },
     {
-      "id": 7,
-      "userId": 3,
-      "name": "Varlos Karlos Sasos",
-      "done": true,
-      "details": "Tost",
-      "taskId": 7
-    },
-    {
-      "id": 8,
-      "userId": 3,
-      "name": "Varlos Karlos",
-      "done": true,
-      "details": "Tost",
-      "taskId": 8
-    },
-    {
       "id": 9,
       "userId": 2,
       "name": "Karel",
@@ -62,8 +46,22 @@
       "id": 11,
       "userId": 3,
       "name": "Frajeruv task",
-      "done": true,
+      "done": false,
       "details": "Hodně epic detaily"
+    },
+    {
+      "id": 12,
+      "userId": 3,
+      "name": "Frajeruv task 2",
+      "done": false,
+      "details": "Hodně epic detaily"
+    },
+    {
+      "id": 13,
+      "userId": 3,
+      "name": "Frajeruv task 3",
+      "done": false,
+      "details": "Hodně epic detaily. dsaedhaskldj klsaujd lůsdhfůlkjdsh flůds"
     }
   ],
   "users": [

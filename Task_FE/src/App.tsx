@@ -75,6 +75,73 @@ function App() {
     }
   };
 
+  const deleteTask = async (idTask: number) => {
+    const response = await fetch(`http://localhost:3000/task/${idTask}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    if (activeTask?.id === idTask) {
+      setActiveTask(null);
+    }
+
+    setTasks(
+      tasks.filter((task) => {
+        return task.id !== idTask;
+      }),
+    );
+  };
+
+  const handleSaveTask = async (newTask: Task) => {
+    if (activeTask?.id == null) {
+      const response = await fetch(`http://localhost:3000/task/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(newTask),
+      });
+
+      if (!response.ok) {
+        console.log("Failed Creating task");
+        return;
+      }
+
+      const createdTask = await response.json();
+
+      setTasks([...tasks, createdTask])
+
+    } else {
+      //POZOR jsem si jistý co je tady task id? Musím to nastavit při kliknutí na tlačítko!
+
+      const response = await fetch(`http://localhost:3000/task/${activeTask.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(newTask),
+      });
+      if (!response.ok) {
+        console.log("Failed updating task");
+        return;
+      }
+      setTasks(
+        tasks.map((task) => {
+          return task.id === activeTask.id ? { ...newTask, id: task.id } : task;
+        }),
+      );
+    }
+  };
+
   //bez tohodle se někdy všechno rozbije a vyskočí error,
   //že tahá něco z local storage, i když je prázdný a neměl by
   const [user, setUser] = useState<User | undefined>(() => {
@@ -150,9 +217,13 @@ function App() {
                           onChange={() => setTaskDone(task.id)}
                           checked={task.done}
                         />
-                        <span onClick={() => setActiveTask(task)} style={{ cursor: 'pointer' }}>
+                        <span
+                          onClick={() => setActiveTask(task)}
+                          style={{ cursor: "pointer" }}
+                        >
                           {task.name}
                         </span>
+                        <button onClick={() => deleteTask(task.id)}>X</button>
                       </div>
                     ))}
                   </div>
