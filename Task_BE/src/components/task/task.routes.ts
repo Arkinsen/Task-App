@@ -93,7 +93,7 @@ taskRouter.patch("/:id", async (req, res) => {
       taskId,
     });
 
-    return res.status(204);
+    return res.status(204).send();
     //const patchedTask = updateTaskByID({ ...req.body, taskId });
   } catch (error: any) {
     return res.status(400).json({ message: error.message });

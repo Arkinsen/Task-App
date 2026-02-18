@@ -1,0 +1,8 @@
+.taskForm{
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    background-color: gray;
+    padding: 25px;
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 import "./App.css";
 import { Login } from "./components/Login/Login";
+import { TaskForm } from "./components/TaskForm/TaskForm";
 
 export type User = {
   username: string;
@@ -15,9 +16,16 @@ export type Task = {
   done: boolean;
 };
 
+export const EmptyTask: Task = {
+  id: -1,
+  name: "",
+  done: false,
+  details: "",
+};
+
 function App() {
   {
-    /* STATES */
+    /* UseStates */
   }
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem("AuthToken");
@@ -25,6 +33,25 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [dropDown, setDropDown] = useState<boolean>(false);
+
+  //bez tohodle se někdy všechno rozbije a vyskočí error,
+  //že tahá něco z local storage, i když je prázdný a neměl by
+  const [user, setUser] = useState<User | undefined>(() => {
+    try {
+      const loadedUser = localStorage.getItem("User");
+
+      if (!loadedUser) {
+        return undefined;
+      }
+
+      return JSON.parse(loadedUser);
+    } catch (error) {
+      console.warn("Chyba při načítání uživatele, mažu poškozená data.");
+      localStorage.removeItem("User");
+    }
+  });
+
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUserTasks = async () => {
@@ -100,7 +127,11 @@ function App() {
   };
 
   const handleSaveTask = async (newTask: Task) => {
-    if (activeTask?.id == null) {
+    if (activeTask?.id === undefined) {
+      return;
+    }
+
+    if (activeTask?.id <= 0) {
       const response = await fetch(`http://localhost:3000/task/`, {
         method: "POST",
         headers: {
@@ -117,19 +148,21 @@ function App() {
 
       const createdTask = await response.json();
 
-      setTasks([...tasks, createdTask])
-
+      setTasks([...tasks, createdTask]);
     } else {
       //POZOR jsem si jistý co je tady task id? Musím to nastavit při kliknutí na tlačítko!
 
-      const response = await fetch(`http://localhost:3000/task/${activeTask.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
+      const response = await fetch(
+        `http://localhost:3000/task/${activeTask.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify(newTask),
         },
-        body: JSON.stringify(newTask),
-      });
+      );
       if (!response.ok) {
         console.log("Failed updating task");
         return;
@@ -139,25 +172,11 @@ function App() {
           return task.id === activeTask.id ? { ...newTask, id: task.id } : task;
         }),
       );
+      setActiveTask(newTask);
     }
+
+    setIsFormOpen(false);
   };
-
-  //bez tohodle se někdy všechno rozbije a vyskočí error,
-  //že tahá něco z local storage, i když je prázdný a neměl by
-  const [user, setUser] = useState<User | undefined>(() => {
-    try {
-      const loadedUser = localStorage.getItem("User");
-
-      if (!loadedUser) {
-        return undefined;
-      }
-
-      return JSON.parse(loadedUser);
-    } catch (error) {
-      console.warn("Chyba při načítání uživatele, mažu poškozená data.");
-      localStorage.removeItem("User");
-    }
-  });
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
@@ -172,6 +191,17 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* 
+        posílám referenci na funci, když jen chci, aby jí zavolal s vlastními daty
+        posílám ()=> když chci, aby child udělal specificky, co já chci
+      */}
+      {isFormOpen && activeTask !== null ? (
+        <TaskForm
+          activeTask={activeTask}
+          onSave={handleSaveTask}
+          onCancel={() => setIsFormOpen(false)}
+        />
+      ) : null}
       {token ? (
         <>
           {/* navbar */}
@@ -205,8 +235,8 @@ function App() {
           {/* Hlavní část rozdělená na dva sloupce */}
           <div className="dashboard">
             <div className="task-list-panel">
+              {/* Prní sloupec*/}
               <h3>Seznam úkolů</h3>
-
               {tasks.length !== 0 ? (
                 <>
                   <div>
@@ -224,18 +254,32 @@ function App() {
                           {task.name}
                         </span>
                         <button onClick={() => deleteTask(task.id)}>X</button>
+                        <button
+                          onClick={() => {
+                            (setActiveTask(task), setIsFormOpen(true));
+                          }}
+                        >
+                          E
+                        </button>
                       </div>
                     ))}
                   </div>
+                  <button
+                    onClick={() => {
+                      (setActiveTask(EmptyTask), setIsFormOpen(true));
+                    }}
+                  >
+                    +
+                  </button>
                 </>
               ) : (
                 <p>You have no task yet!</p>
               )}
             </div>
 
+            {/* Druhý sloupec*/}
             <div className="task-detail-panel">
               <h3>Detail úkolu</h3>
-              {/* Tady později bude detail */}
               {activeTask && <p>{activeTask.details}</p>}
             </div>
           </div>
