@@ -53,9 +53,7 @@ export function TaskForm({ activeTask, onSave, onCancel }: TaskProps) {
         <button type="button" onClick={onCancel}>
           Zrušit
         </button>
-        <button type="submit">
-          Uložit
-        </button>
+        <button type="submit">Uložit</button>
       </div>
     </form>
   );

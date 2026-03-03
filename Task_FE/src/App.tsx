@@ -273,7 +273,16 @@ function App() {
                   </button>
                 </>
               ) : (
-                <p>You have no task yet!</p>
+                <>
+                  <button
+                    onClick={() => {
+                      (setActiveTask(EmptyTask), setIsFormOpen(true));
+                    }}
+                  >
+                    +
+                  </button>
+                  <p>You have no task yet!</p>
+                </>
               )}
             </div>
 

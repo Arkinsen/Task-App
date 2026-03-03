@@ -45,9 +45,9 @@
     {
       "id": 13,
       "userId": 3,
-      "name": "Frajeruv task 3",
+      "name": "XDDD",
       "done": false,
-      "details": "dsdetaily. dsaedhaskldj klsaujd lůsdhfůlkjdsh flůds",
+      "details": "ASDasdsad",
       "taskId": 13
     },
     {
@@ -71,6 +71,13 @@
       "name": "Task",
       "done": false,
       "details": "Super Task"
+    },
+    {
+      "id": 18,
+      "userId": 4,
+      "name": "Dodelat registrace",
+      "done": false,
+      "details": "Ještě ten login po registraci"
     }
   ],
   "users": [
@@ -94,6 +101,32 @@
       "role": "user",
       "password": "123",
       "userToken": "user_token3"
+    },
+    {
+      "id": 4,
+      "username": "Martin",
+      "role": "user",
+      "password": "kamos",
+      "userToken": "user_token4"
+    },
+    {
+      "id": 5,
+      "username": "Kamos",
+      "role": "user",
+      "password": "les"
+    },
+    {
+      "id": 6,
+      "username": "Kamos2",
+      "role": "user",
+      "password": "les"
+    },
+    {
+      "id": 7,
+      "username": "Kamos22",
+      "role": "user",
+      "password": "les",
+      "userToken": "user_token7"
     }
   ]
 }

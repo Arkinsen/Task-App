@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./login.css";
 import { type User } from "../../App";
+import { RegisterForm } from "../RegisterForm/RegisterForm";
 
 type AuthProps = {
   setToken: (token: string | null) => void;
@@ -11,12 +12,16 @@ export function Login({ setToken, setUser }: AuthProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-
-  const [submitProcces, setSubmitProcces] = useState("");
+  const [registerForm, setRegisterForm] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    requestLogin();
+  };
+
+  const requestLogin = async () => {
     try {
-      e.preventDefault(); // Stopne obnovení stránky...prej
+      // Stopne obnovení stránky...prej
       setError(null);
 
       const response = await fetch("http://localhost:3000/auth/login", {
@@ -52,28 +57,52 @@ export function Login({ setToken, setUser }: AuthProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="loginForm">
-      <h2>Login</h2>
-      <div className="error-div ">{error ? <>{error}</> : null}</div>
-      <input
-        className="loginInputs"
-        type="text"
-        placeholder="username"
-        id="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        className="loginInputs"
-        type="password"
-        id="password"
-        placeholder="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <button type="submit" className="loginButton">
-        {submitProcces ? "Checking credetials" : "submit"}
-      </button>
-    </form>
+    <div className="loginFormContainer">
+      {registerForm ? (
+        <>
+          <RegisterForm
+            onCancel={() => setRegisterForm(false)}
+            loginUser={() => requestLogin()}
+            setToken={setToken}
+            setUser={setUser}
+          />
+        </>
+      ) : (
+        <>
+          <form onSubmit={handleSubmit} className="loginForm">
+            <h2>Login</h2>
+            <div className="error-div ">{error ? <>{error}</> : null}</div>
+            <input
+              className="loginInputs"
+              type="text"
+              placeholder="username"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              className="loginInputs"
+              type="password"
+              id="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button type="submit" className="loginButton">
+              Log in
+            </button>
+            <div>
+              Don't have account?{" "}
+              <span
+                className="createAccountLink"
+                onClick={() => setRegisterForm(true)}
+              >
+                Create one!
+              </span>
+            </div>
+          </form>
+        </>
+      )}
+    </div>
   );
 }
