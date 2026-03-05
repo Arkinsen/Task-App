@@ -16,10 +16,10 @@ export function Login({ setToken, setUser }: AuthProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    requestLogin();
+    requestLogin(username, password);
   };
 
-  const requestLogin = async () => {
+  const requestLogin = async (username: string, password: string) => {
     try {
       // Stopne obnovení stránky...prej
       setError(null);
@@ -62,7 +62,7 @@ export function Login({ setToken, setUser }: AuthProps) {
         <>
           <RegisterForm
             onCancel={() => setRegisterForm(false)}
-            loginUser={() => requestLogin()}
+            loginUser={requestLogin}
             setToken={setToken}
             setUser={setUser}
           />

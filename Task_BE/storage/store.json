@@ -78,6 +78,28 @@
       "name": "Dodelat registrace",
       "done": false,
       "details": "Ještě ten login po registraci"
+    },
+    {
+      "id": 19,
+      "userId": 10,
+      "name": "Zkouska",
+      "done": false,
+      "details": "Zkouskaaaaa",
+      "taskId": 19
+    },
+    {
+      "id": 20,
+      "userId": 10,
+      "name": "Crazy",
+      "done": false,
+      "details": "Vousy"
+    },
+    {
+      "id": 21,
+      "userId": 10,
+      "name": "hokus",
+      "done": false,
+      "details": "pokus"
     }
   ],
   "users": [
@@ -127,6 +149,25 @@
       "role": "user",
       "password": "les",
       "userToken": "user_token7"
+    },
+    {
+      "id": 8,
+      "username": "Tonda",
+      "role": "user",
+      "password": "tony"
+    },
+    {
+      "id": 9,
+      "username": "Tonislav",
+      "role": "user",
+      "password": "tony"
+    },
+    {
+      "id": 10,
+      "username": "Tonislavovec",
+      "role": "user",
+      "password": "Karel",
+      "userToken": "user_token10"
     }
   ]
 }

@@ -91,6 +91,11 @@ function App() {
           },
         },
       );
+
+      if (!response) {
+        return;
+      }
+
       setTasks(
         tasks.map((task) => {
           return task.id === idTask ? { ...task, done: !task.done } : task;
@@ -265,8 +270,13 @@ function App() {
                     ))}
                   </div>
                   <button
-                    onClick={() => {
+                    /*  onClick={() => {
                       (setActiveTask(EmptyTask), setIsFormOpen(true));
+                    }}*/
+                    //Prý radši takhle
+                    onClick={() => {
+                      setActiveTask(EmptyTask);
+                      setIsFormOpen(true);
                     }}
                   >
                     +

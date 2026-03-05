@@ -20,7 +20,7 @@ export function TaskForm({ activeTask, onSave, onCancel }: TaskProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(formData);
-    onCancel;
+    onCancel();
   };
 
   return (

@@ -4,12 +4,17 @@ import { type User } from "../../App";
 
 type RegisterProps = {
   onCancel: () => void;
-  loginUser: () => void;
+  loginUser: (username: string, password: string) => void;
   setToken: (token: string | null) => void;
   setUser: (user: User | undefined) => void;
 };
 
-export function RegisterForm({ onCancel, setToken, setUser }: RegisterProps) {
+export function RegisterForm({
+  onCancel,
+  loginUser,
+  setToken,
+  setUser,
+}: RegisterProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repPassword, setrepPassword] = useState("");
@@ -40,38 +45,7 @@ export function RegisterForm({ onCancel, setToken, setUser }: RegisterProps) {
         console.log(response.statusText);
       }
 
-      try {
-        // Stopne obnovení stránky...prej
-
-        const response = await fetch("http://localhost:3000/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            username: username.toLowerCase().trim(),
-            password,
-          }),
-        });
-
-        if (!response.ok) {
-          return;
-        }
-
-        const data = await response.json();
-
-        console.log(data);
-
-        const { userToken, user } = data;
-
-        localStorage.setItem("AuthToken", userToken);
-        localStorage.setItem("User", JSON.stringify(user));
-
-        setToken(userToken);
-        setUser(user);
-      } catch (error) {
-        console.log(error);
-      }
+      await loginUser(username, password);
     } catch (error) {
       console.log(error);
     }
