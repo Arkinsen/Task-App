@@ -7,67 +7,67 @@ import {
   Task,
   toggleDone,
   updateTaskByID,
-} from "./task.model.js";
+} from './task.model.js'
 
 export const taskService = {
   getAllTasks(role: string, userId: number) {
-    if (role === "admin") {
-      return getAll();
+    if (role === 'admin') {
+      return getAll()
     }
 
-    if (role === "user") {
-      return getAllUsersTasks(userId);
+    if (role === 'user') {
+      return getAllUsersTasks(userId)
     }
 
     //tohle by nikdy nemělo nastat.. i tak radši xd
-    throw new Error("Unknown user role");
+    throw new Error('Unknown user role')
   },
 
   getTaskById(taskId: number, userId: number, role: string) {
-    const task = getById(taskId);
+    const task = getById(taskId)
 
     if (!task) {
-      throw new Error("Task with such id could not be found");
+      throw new Error('Task with such id could not be found')
     }
 
-    if (role === "admin") {
-      return task;
+    if (role === 'admin') {
+      return task
     }
 
-    if (role === "user") {
+    if (role === 'user') {
       if (task.userId === userId) {
-        return task;
+        return task
       }
     }
     //Nejsem si jistej jestli vyhazovat vyjimku takhle na konci je zrovna geniální
-    throw new Error("User has no permission to acces this task");
+    throw new Error('User has no permission to acces this task')
   },
 
   createTask(name: string, userId: number, done = false, details?: string) {
     if (name.length <= 3) {
-      throw new Error("Task name needs to have at least 3 letters");
+      throw new Error('Task name needs to have at least 3 letters')
     }
 
-    return createNewTask(name, userId, done, details);
+    return createNewTask(name, userId, done, details)
   },
 
   deleteTaskByID(id: number, userId: number, role: string): boolean {
     //Tohle je asi trochu retardovaný?
     //Najdu task, protože potřebuji jeho user_id
     //Hlídá mi to i jestli existuje
-    const task = this.getTaskById(id, userId, role);
+    const task = this.getTaskById(id, userId, role)
 
-    if (role === "admin") {
-      return deleteTaskByID(task.id);
+    if (role === 'admin') {
+      return deleteTaskByID(task.id)
     }
 
-    if (role === "user") {
+    if (role === 'user') {
       if (task.userId === userId) {
-        return deleteTaskByID(task.id);
+        return deleteTaskByID(task.id)
       }
     }
 
-    return false;
+    return false
   },
 
   updateTaskById(
@@ -76,35 +76,35 @@ export const taskService = {
     role: string,
     taskUpadte: Partial<Task>
   ) {
-    console.log("hmm");
+    console.log('hmm')
 
-    const task = this.getTaskById(taskId, userId, role);
+    const task = this.getTaskById(taskId, userId, role)
 
-    console.log("hmmmmmmm");
+    console.log('hmmmmmmm')
 
-    if (role === "admin") {
-      return updateTaskByID({ ...taskUpadte, id: taskId });
+    if (role === 'admin') {
+      return updateTaskByID({ ...taskUpadte, id: taskId })
     }
 
-    if (role === "user") {
+    if (role === 'user') {
       if (task.userId === userId) {
-        return updateTaskByID({ ...taskUpadte, id: taskId });
+        return updateTaskByID({ ...taskUpadte, id: taskId })
       }
     }
-    return false;
+    return false
   },
 
   toggleDone(id: number, userId: number, role: string) {
-    const task = this.getTaskById(id, userId, role);
+    const task = this.getTaskById(id, userId, role)
 
-    if (role === "admin") {
-      return toggleDone(id);
+    if (role === 'admin') {
+      return toggleDone(id)
     }
 
-    if (role === "user") {
+    if (role === 'user') {
       if (task.userId === userId) {
-        return toggleDone(id);
+        return toggleDone(id)
       }
     }
   },
-};
+}

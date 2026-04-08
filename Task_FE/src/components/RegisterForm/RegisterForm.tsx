@@ -5,16 +5,10 @@ import { type User } from "../../App";
 type RegisterProps = {
   onCancel: () => void;
   loginUser: (username: string, password: string) => void;
-  setToken: (token: string | null) => void;
   setUser: (user: User | undefined) => void;
 };
 
-export function RegisterForm({
-  onCancel,
-  loginUser,
-  setToken,
-  setUser,
-}: RegisterProps) {
+export function RegisterForm({ onCancel, loginUser }: RegisterProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [repPassword, setrepPassword] = useState("");

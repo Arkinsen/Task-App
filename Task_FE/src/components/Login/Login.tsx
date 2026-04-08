@@ -1,14 +1,13 @@
 import { useState } from "react";
 import "./login.css";
-import { type User } from "../../App";
+import { type User } from "../../types/common";
 import { RegisterForm } from "../RegisterForm/RegisterForm";
 
 type AuthProps = {
-  setToken: (token: string | null) => void;
   setUser: (user: User | undefined) => void;
 };
 
-export function Login({ setToken, setUser }: AuthProps) {
+export function Login({ setUser }: AuthProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,6 +24,7 @@ export function Login({ setToken, setUser }: AuthProps) {
       setError(null);
 
       const response = await fetch("http://localhost:3000/auth/login", {
+        credentials: "include",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,13 +44,11 @@ export function Login({ setToken, setUser }: AuthProps) {
 
       console.log(data);
 
-      const { userToken, user } = data;
+      const loggedUser = data;
 
-      localStorage.setItem("AuthToken", userToken);
-      localStorage.setItem("User", JSON.stringify(user));
+      localStorage.setItem("User", JSON.stringify(loggedUser));
 
-      setToken(userToken);
-      setUser(user);
+      setUser(loggedUser);
     } catch (error) {
       console.log(error);
     }
@@ -63,7 +61,6 @@ export function Login({ setToken, setUser }: AuthProps) {
           <RegisterForm
             onCancel={() => setRegisterForm(false)}
             loginUser={requestLogin}
-            setToken={setToken}
             setUser={setUser}
           />
         </>

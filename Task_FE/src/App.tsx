@@ -3,195 +3,52 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { Login } from "./components/Login/Login";
 import { TaskForm } from "./components/TaskForm/TaskForm";
-
-export type User = {
-  username: string;
-  role: "admin" | "user";
-};
-
-export type Task = {
-  id: number;
-  name: string;
-  details: string;
-  done: boolean;
-};
-
-export const EmptyTask: Task = {
-  id: -1,
-  name: "",
-  done: false,
-  details: "",
-};
+import { useTask } from "./hooks/useTask";
+import { EmptyTask, useAppContext } from "./store/appStore";
+import type { Task } from "./types/common";
 
 function App() {
-  {
-    /* UseStates */
-  }
-  const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem("AuthToken");
-  });
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [dropDown, setDropDown] = useState<boolean>(false);
-
-  //bez tohodle se někdy všechno rozbije a vyskočí error,
-  //že tahá něco z local storage, i když je prázdný a neměl by
-  const [user, setUser] = useState<User | undefined>(() => {
-    try {
-      const loadedUser = localStorage.getItem("User");
-
-      if (!loadedUser) {
-        return undefined;
-      }
-
-      return JSON.parse(loadedUser);
-    } catch (error) {
-      console.warn("Chyba při načítání uživatele, mažu poškozená data.");
-      localStorage.removeItem("User");
-    }
-  });
-
-  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const {
+    user,
+    setDropDown,
+    dropDown,
+    setUser,
+    activeTask,
+    setActiveTask,
+    setIsFormOpen,
+    isFormOpen,
+    tasks,
+  } = useAppContext();
+  const { fetchUserTasks, deleteTask, setTaskDone, createTask, updateTask } =
+    useTask();
 
   useEffect(() => {
-    const fetchUserTasks = async () => {
-      //Asi pak lepší řešit přes cookies?
-      const response = await fetch("http://localhost:3000/task/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          /*To je chujovina, takhle psát bearer růčo...*/
-          Authorization: "Bearer " + token,
-        },
-      });
-
-      if (!response.ok) {
-        console.log(response.statusText);
-        return;
-      }
-
-      const data = await response.json();
-
-      setTasks(data);
-    };
     fetchUserTasks();
-  }, [token]);
-
-  const setTaskDone = async (idTask: number) => {
-    console.log("1. Začínám fetch...");
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/task/toggle/${idTask}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        },
-      );
-
-      if (!response) {
-        return;
-      }
-
-      setTasks(
-        tasks.map((task) => {
-          return task.id === idTask ? { ...task, done: !task.done } : task;
-        }),
-      );
-      console.log("2. Fetch dokončen!", response.status); // <--- Dostaneme se sem?
-    } catch (error) {
-      console.error("3. CHYBA při fetchi:", error); // <--- Nebo skončíme tady?
-    }
-  };
-
-  const deleteTask = async (idTask: number) => {
-    const response = await fetch(`http://localhost:3000/task/${idTask}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
-      },
-    });
-
-    if (!response.ok) {
-      return;
-    }
-
-    if (activeTask?.id === idTask) {
-      setActiveTask(null);
-    }
-
-    setTasks(
-      tasks.filter((task) => {
-        return task.id !== idTask;
-      }),
-    );
-  };
-
-  const handleSaveTask = async (newTask: Task) => {
-    if (activeTask?.id === undefined) {
-      return;
-    }
-
-    if (activeTask?.id <= 0) {
-      const response = await fetch(`http://localhost:3000/task/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-        body: JSON.stringify(newTask),
-      });
-
-      if (!response.ok) {
-        console.log("Failed Creating task");
-        return;
-      }
-
-      const createdTask = await response.json();
-
-      setTasks([...tasks, createdTask]);
-    } else {
-      //POZOR jsem si jistý co je tady task id? Musím to nastavit při kliknutí na tlačítko!
-
-      const response = await fetch(
-        `http://localhost:3000/task/${activeTask.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          body: JSON.stringify(newTask),
-        },
-      );
-      if (!response.ok) {
-        console.log("Failed updating task");
-        return;
-      }
-      setTasks(
-        tasks.map((task) => {
-          return task.id === activeTask.id ? { ...newTask, id: task.id } : task;
-        }),
-      );
-      setActiveTask(newTask);
-    }
-
-    setIsFormOpen(false);
-  };
+  }, [fetchUserTasks, user]);
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
   };
 
   const handleLogout = () => {
-    setToken(null);
     setUser(undefined);
     localStorage.removeItem("AuthToken");
     localStorage.removeItem("User");
+  };
+
+  const handleSaveTask = async () => {
+    if (activeTask?.id === undefined) {
+      return;
+    }
+
+    if (activeTask?.id <= 0) {
+      createTask(activeTask);
+    } else {
+      //POZOR nejsem si jistý jestli je tady task id? Musím to nastavit při kliknutí na tlačítko.
+      updateTask(activeTask);
+    }
+
+    setIsFormOpen(false);
   };
 
   return (
@@ -207,7 +64,7 @@ function App() {
           onCancel={() => setIsFormOpen(false)}
         />
       ) : null}
-      {token ? (
+      {user ? (
         <>
           {/* navbar */}
           <nav className="navbar">
@@ -304,7 +161,7 @@ function App() {
           </div>
         </>
       ) : (
-        <Login setToken={setToken} setUser={setUser} />
+        <Login setUser={setUser} />
       )}
     </div>
   );

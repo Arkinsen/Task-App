@@ -1,16 +1,21 @@
-import express from "express";
-import { taskRouter } from "./components/task/task.routes.js";
-import { authRouter } from "./components/Auth/auth.routes.js";
-import { userRouter } from "./components/user/user.routes.js";
-import { authMiddleware } from "./components/Auth/auth.middleware.js";
-import cors from "cors";
+import express from 'express'
+import { taskRouter } from './components/task/task.routes.js'
+import { authRouter } from './components/Auth/auth.routes.js'
+import { userRouter } from './components/user/user.routes.js'
+import { authMiddleware } from './components/Auth/auth.middleware.js'
+import cors from 'cors'
 
-export const app = express();
+export const app = express()
 
-app.use(cors())
-app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+)
+app.use(express.json())
 
-app.get("/health", (_req, res) => res.send("OK"));
-app.use("/task", authMiddleware, taskRouter);
-app.use("/auth", authRouter);
-app.use("/user", userRouter);
+app.get('/health', (_req, res) => res.send('OK'))
+app.use('/task', authMiddleware, taskRouter)
+app.use('/auth', authRouter)
+app.use('/user', userRouter)
