@@ -1,13 +1,16 @@
 import { useState } from "react";
-import "./login.css";
 import { type User } from "../../types/common";
 import { RegisterForm } from "../RegisterForm/RegisterForm";
+import { Button, TextField, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
 type AuthProps = {
   setUser: (user: User | undefined) => void;
+  setToken: (token: string | undefined) => void;
 };
 
-export function Login({ setUser }: AuthProps) {
+export function Login({ setUser, setToken }: AuthProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -44,18 +47,24 @@ export function Login({ setUser }: AuthProps) {
 
       console.log(data);
 
-      const loggedUser = data;
+      const { userToken, user } = data;
 
-      localStorage.setItem("User", JSON.stringify(loggedUser));
+      if (!userToken) {
+        console.log("userToken neni");
+      }
 
-      setUser(loggedUser);
+      localStorage.setItem("User", JSON.stringify(user));
+      localStorage.setItem("userToken", userToken);
+
+      setUser(user);
+      setToken(userToken);
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="loginFormContainer">
+    <div>
       {registerForm ? (
         <>
           <RegisterForm
@@ -66,38 +75,69 @@ export function Login({ setUser }: AuthProps) {
         </>
       ) : (
         <>
-          <form onSubmit={handleSubmit} className="loginForm">
-            <h2>Login</h2>
-            <div className="error-div ">{error ? <>{error}</> : null}</div>
-            <input
-              className="loginInputs"
-              type="text"
-              placeholder="username"
-              id="username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-              className="loginInputs"
-              type="password"
-              id="password"
-              placeholder="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit" className="loginButton">
-              Log in
-            </button>
-            <div>
-              Don't have account?{" "}
-              <span
-                className="createAccountLink"
-                onClick={() => setRegisterForm(true)}
-              >
-                Create one!
-              </span>
-            </div>
-          </form>
+          <Box
+            sx={{
+              minHeight: "100vh",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              bgcolor: "background.default",
+            }}
+          >
+            <Box
+              sx={{
+                bgcolor: "background.paper",
+                border: "1px solid",
+                borderColor: "divider",
+                borderRadius: 2,
+                p: 5,
+                width: 420,
+                height: 400,
+                boxShadow: 1,
+              }}
+            >
+              <Stack component="form" onSubmit={handleSubmit} spacing={4}>
+                <Typography variant="h5">Login</Typography>
+                <TextField
+                  label="Username"
+                  variant="outlined"
+                  onChange={(e) => setUsername(e.target.value)}
+                  fullWidth
+                />
+                <TextField
+                  label="Password"
+                  variant="outlined"
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  fullWidth
+                />
+                {error && (
+                  <Typography color="error" sx={{ fontSize: 13 }}>
+                    {error}
+                  </Typography>
+                )}
+                <Button variant="contained" type="submit" fullWidth>
+                  Sign in
+                </Button>
+                <Typography
+                  sx={{
+                    fontSize: 13,
+                    textAlign: "center",
+                    color: "text.secondary",
+                  }}
+                >
+                  Don't have an account?{" "}
+                  <Box
+                    component="span"
+                    sx={{ color: "primary.main", cursor: "pointer" }}
+                    onClick={() => setRegisterForm(true)}
+                  >
+                    Sign up
+                  </Box>
+                </Typography>
+              </Stack>
+            </Box>
+          </Box>
         </>
       )}
     </div>

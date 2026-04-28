@@ -1,100 +1,67 @@
 {
   "tasks": [
     {
-      "id": 2,
-      "userId": 2,
-      "name": "Karel",
+      "id": 1,
+      "userId": 3,
+      "name": "help plsss",
       "done": false,
-      "details": "Tost"
+      "details": "detaily lasd",
+      "taskId": 1
+    },
+    {
+      "id": 2,
+      "userId": 3,
+      "name": "Chcidsa",
+      "done": true,
+      "details": "Ukol",
+      "taskId": 2
     },
     {
       "id": 3,
-      "userId": 2,
-      "name": "Karel",
-      "done": false,
-      "details": "Tost"
+      "userId": 3,
+      "name": "dsad",
+      "done": true,
+      "details": "sad",
+      "taskId": 3
     },
     {
       "id": 4,
-      "userId": 2,
-      "name": "Karel",
+      "userId": 3,
+      "name": "Teď to bude fungovat",
       "done": false,
-      "details": "Tost"
+      "details": "Right?",
+      "taskId": 4
+    },
+    {
+      "id": 5,
+      "userId": 3,
+      "name": "sdsadasd",
+      "done": false,
+      "details": "sadas",
+      "taskId": 5
     },
     {
       "id": 6,
-      "userId": 1,
-      "name": "Karel",
+      "userId": 8,
+      "name": "Easy",
       "done": false,
-      "details": "Tost"
+      "details": "das"
     },
     {
-      "id": 9,
-      "userId": 2,
-      "name": "Karel",
-      "done": false,
-      "details": "Tost"
-    },
-    {
-      "id": 10,
-      "userId": 2,
-      "name": "Karel",
-      "done": false,
-      "details": "Tost"
-    },
-    {
-      "id": 13,
+      "id": 7,
       "userId": 3,
-      "name": "XDDDsdas",
+      "name": "dsadas",
       "done": false,
-      "details": "ASDasdsad",
-      "taskId": 13
+      "details": "Funguje",
+      "taskId": 7
     },
     {
-      "id": 15,
+      "id": 8,
       "userId": 3,
-      "name": "Crazy",
+      "name": "Comeon",
       "done": false,
-      "details": "CRAAAZYYYY"
-    },
-    {
-      "id": 16,
-      "userId": 3,
-      "name": "Funguj",
-      "done": false,
-      "details": "EEEEj funguje",
-      "taskId": 16
-    },
-    {
-      "id": 17,
-      "userId": 3,
-      "name": "Task",
-      "done": false,
-      "details": "Super Task",
-      "taskId": 17
-    },
-    {
-      "id": 18,
-      "userId": 4,
-      "name": "Dodelat registrace",
-      "done": false,
-      "details": "Ještě ten login po registraci"
-    },
-    {
-      "id": 19,
-      "userId": 10,
-      "name": "Zkouska",
-      "done": true,
-      "details": "Zkouskaaaaa",
-      "taskId": 19
-    },
-    {
-      "id": 21,
-      "userId": 10,
-      "name": "dsadasds",
-      "done": false,
-      "details": "sadasdsadasdsada",
-      "taskId": 21
+      "details": "Letsgodsa",
+      "taskId": 8
     }
   ],
   "users": [
@@ -149,13 +116,15 @@
       "id": 8,
       "username": "Tonda",
       "role": "user",
-      "password": "tony"
+      "password": "tony",
+      "userToken": "user_token8"
     },
     {
       "id": 9,
       "username": "Tonislav",
       "role": "user",
-      "password": "tony"
+      "password": "tony",
+      "userToken": "user_token9"
     },
     {
       "id": 10,
@@ -163,6 +132,41 @@
       "role": "user",
       "password": "Karel",
       "userToken": "user_token10"
+    },
+    {
+      "id": 11,
+      "username": "",
+      "role": "user",
+      "password": "",
+      "userToken": "user_token11"
+    },
+    {
+      "id": 12,
+      "username": "dsa",
+      "role": "user",
+      "password": "",
+      "userToken": "user_token12"
+    },
+    {
+      "id": 13,
+      "username": "fds",
+      "role": "user",
+      "password": "a",
+      "userToken": "user_token13"
+    },
+    {
+      "id": 14,
+      "username": "funguj",
+      "role": "user",
+      "password": "dsad",
+      "userToken": "user_token14"
+    },
+    {
+      "id": 15,
+      "username": "Help me please",
+      "role": "user",
+      "password": "Ineed",
+      "userToken": "user_token15"
     }
   ]
 }

@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
-import "./App.css";
 import { Login } from "./components/Login/Login";
 import { TaskForm } from "./components/TaskForm/TaskForm";
 import { useTask } from "./hooks/useTask";
 import { EmptyTask, useAppContext } from "./store/appStore";
 import type { Task } from "./types/common";
+import { Button } from "@mui/material";
 
 function App() {
   const {
@@ -13,6 +13,8 @@ function App() {
     setDropDown,
     dropDown,
     setUser,
+    token,
+    setToken,
     activeTask,
     setActiveTask,
     setIsFormOpen,
@@ -24,7 +26,7 @@ function App() {
 
   useEffect(() => {
     fetchUserTasks();
-  }, [fetchUserTasks, user]);
+  }, [fetchUserTasks, user]); //fetchUserTasks Jak udělat, aby se to případně timeoutlo?
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
@@ -32,20 +34,23 @@ function App() {
 
   const handleLogout = () => {
     setUser(undefined);
-    localStorage.removeItem("AuthToken");
+    setToken(undefined);
+    localStorage.removeItem("userToken");
     localStorage.removeItem("User");
   };
 
-  const handleSaveTask = async () => {
+  const handleSaveTask = async (newTask: Task) => {
     if (activeTask?.id === undefined) {
       return;
     }
 
+    console.log(activeTask);
+
     if (activeTask?.id <= 0) {
-      createTask(activeTask);
+      createTask(newTask);
     } else {
       //POZOR nejsem si jistý jestli je tady task id? Musím to nastavit při kliknutí na tlačítko.
-      updateTask(activeTask);
+      updateTask(newTask);
     }
 
     setIsFormOpen(false);
@@ -116,13 +121,17 @@ function App() {
                           {task.name}
                         </span>
                         <button onClick={() => deleteTask(task.id)}>X</button>
-                        <button
+
+                        <Button
+                          variant="contained"
                           onClick={() => {
-                            (setActiveTask(task), setIsFormOpen(true));
+                            setActiveTask(task);
+                            setIsFormOpen(true);
+                            console.log("Active task: " + activeTask?.name);
                           }}
                         >
                           E
-                        </button>
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -161,7 +170,7 @@ function App() {
           </div>
         </>
       ) : (
-        <Login setUser={setUser} />
+        <Login setUser={setUser} setToken={setToken} />
       )}
     </div>
   );

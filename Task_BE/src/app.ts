@@ -4,6 +4,7 @@ import { authRouter } from './components/Auth/auth.routes.js'
 import { userRouter } from './components/user/user.routes.js'
 import { authMiddleware } from './components/Auth/auth.middleware.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 export const app = express()
 
@@ -13,6 +14,9 @@ app.use(
     credentials: true,
   })
 )
+
+app.use(cookieParser())
+
 app.use(express.json())
 
 app.get('/health', (_req, res) => res.send('OK'))

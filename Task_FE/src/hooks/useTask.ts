@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { fetchRequest } from "../api/fetchRequest";
 import { useAppContext } from "../store/appStore";
 import type { Task } from "../types/common";
@@ -5,7 +6,7 @@ import type { Task } from "../types/common";
 export const useTask = () => {
   const { tasks, setTasks, token, activeTask, setActiveTask } = useAppContext();
 
-  const fetchUserTasks = async () => {
+  const fetchUserTasks = useCallback(async () => {
     try {
       const data = await fetchRequest<Task[]>("/task/", token, {
         method: "GET",
@@ -15,7 +16,7 @@ export const useTask = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [token]); //TODO proč nejde token? Takže říkám, že se token změní jen když
 
   const setTaskDone = async (idTask: number) => {
     try {

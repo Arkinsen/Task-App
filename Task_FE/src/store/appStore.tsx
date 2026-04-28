@@ -48,7 +48,20 @@ export const TaskProvider = ({ children }: { children: ReactNode }) => {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
-  const [token, setToken] = useState<string>();
+  const [token, setToken] = useState<string | undefined>(() => {
+    try {
+      const loadedToken = localStorage.getItem("userToken");
+
+      if (!loadedToken) {
+        return undefined;
+      }
+
+      return loadedToken;
+    } catch (error) {
+      console.warn("Chyba při načítání tokenu, smažu poškozená data.");
+      localStorage.removeItem("userToken");
+    }
+  });
 
   //bez tohodle se někdy všechno rozbije a vyskočí error,
   //že tahá něco z local storage, i když je prázdný a neměl by

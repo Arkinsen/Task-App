@@ -20,6 +20,7 @@ export const authMiddleware = (
   }
 
   const user = findUserByToken(tokenSplit[1])
+  //const user = findUserByToken(token)
 
   if (!user) {
     return res.status(401).send({ message: 'User with this token not found' })

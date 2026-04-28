@@ -1,3 +1,4 @@
+import { error } from 'console'
 import {
   createNewTask,
   deleteTaskByID,
@@ -75,23 +76,13 @@ export const taskService = {
     userId: number,
     role: string,
     taskUpadte: Partial<Task>
-  ) {
-    console.log('hmm')
-
+  ): Task {
     const task = this.getTaskById(taskId, userId, role)
 
-    console.log('hmmmmmmm')
-
-    if (role === 'admin') {
+    if (role === 'admin' || (role === 'user' && task.userId === userId)) {
       return updateTaskByID({ ...taskUpadte, id: taskId })
     }
-
-    if (role === 'user') {
-      if (task.userId === userId) {
-        return updateTaskByID({ ...taskUpadte, id: taskId })
-      }
-    }
-    return false
+    throw Error('Task does not exists')
   },
 
   toggleDone(id: number, userId: number, role: string) {

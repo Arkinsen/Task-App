@@ -1,43 +1,43 @@
-import { storeData } from "../../store.js";
+import { storeData } from '../../store.js'
 
 export type Task = {
-  id: number;
-  userId: number;
-  name: string;
-  done: boolean;
-  details?: string;
-};
+  id: number
+  userId: number
+  name: string
+  done: boolean
+  details?: string
+}
 
-let nextId = 1;
+let nextId = 1
 
 function assignID(): number {
   if (storeData.tasks.length === 0) {
-    return nextId;
+    return nextId
   }
-  nextId = Math.max(...storeData.tasks.map((task) => task.id)) + 1;
-  return nextId;
+  nextId = Math.max(...storeData.tasks.map((task) => task.id)) + 1
+  return nextId
 }
 
 // const tasks: Task[] = [];
 
 export function getAll(): Task[] {
-  return storeData.tasks;
+  return storeData.tasks
 }
 
 export function getAllUsersTasks(userId: number): Task[] {
-  return storeData.tasks.filter((tasks) => tasks.userId === userId);
+  return storeData.tasks.filter((tasks) => tasks.userId === userId)
 }
 
 export function getById(id: number): Task | undefined {
   const task = storeData.tasks.find((task) => {
-    return task.id === id;
-  });
+    return task.id === id
+  })
 
   if (!task) {
-    return;
+    return
   }
 
-  return task;
+  return task
 }
 
 export function createNewTask(
@@ -52,57 +52,59 @@ export function createNewTask(
     name: name,
     done: done,
     details: details,
-  };
+  }
 
-  storeData.setState({ tasks: [...storeData.tasks, newtask] });
+  storeData.setState({ tasks: [...storeData.tasks, newtask] })
 
-  return newtask;
+  return newtask
 }
 
 //Musím vrátit task do deleteTaskById
 export function deleteTaskByID(id: number): boolean {
-  const before = storeData.tasks.length;
+  const before = storeData.tasks.length
 
   const afterdelete = storeData.tasks.filter((task) => {
-    return task.id !== id;
-  });
+    return task.id !== id
+  })
 
-  if (afterdelete.length === before) return false;
+  if (afterdelete.length === before) return false
 
-  storeData.setState({ tasks: afterdelete });
-  return true;
+  storeData.setState({ tasks: afterdelete })
+  return true
 }
 
-export function updateTaskByID(taskUpadte: Partial<Task>): boolean {
-  if (!taskUpadte.id) return false;
+export function updateTaskByID(taskUpadte: Partial<Task>): Task {
+  if (!taskUpadte.id) throw new Error('Task id is required')
 
-  let udpated = false;
+  let udpated: Task | undefined
 
   const afterUpdate = storeData.tasks.map((storeTask) => {
     if (storeTask.id === taskUpadte.id) {
-      udpated = true;
-      return { ...storeTask, ...taskUpadte };
+      udpated = { ...storeTask, ...taskUpadte }
+      return udpated
     }
-    return storeTask;
-  });
+    return storeTask
+  })
 
   if (udpated) {
-    storeData.setState({ tasks: afterUpdate });
+    storeData.setState({ tasks: afterUpdate })
+  } else {
+    throw new Error(`Task not found`)
   }
-  return udpated;
+  return udpated
 }
 
 export function toggleDone(id: number): boolean {
-  let udpated = false;
+  let udpated = false
   const afterToggle = storeData.tasks.map((task) => {
     if (task.id === id) {
-      udpated = true;
-      return { ...task, done: !task.done };
+      udpated = true
+      return { ...task, done: !task.done }
     }
     console.log(task)
-    return task;
-  });
+    return task
+  })
 
-  storeData.setState({ tasks: afterToggle });
-  return udpated;
+  storeData.setState({ tasks: afterToggle })
+  return udpated
 }

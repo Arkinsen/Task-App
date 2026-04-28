@@ -2,7 +2,7 @@ const LOCAL_API = import.meta.env.VITE_LOCAL_API;
 
 const getAuthHeaders = (token = "") => ({
   "Content-Type": "application/json",
-  Authorization: `Bearer ${token}`,
+  ...(token && { Authorization: `Bearer ${token}` }),
 });
 
 export const fetchRequest = async <T>(
@@ -25,6 +25,6 @@ export const fetchRequest = async <T>(
     const message = await response.text();
     throw new Error(message || response.statusText);
   }
-
-  return response.json() as Promise<T>;
+  const text = await response.text();
+  return (text ? JSON.parse(text) : null) as T;
 };

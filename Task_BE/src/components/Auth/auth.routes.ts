@@ -17,10 +17,10 @@ authRouter.post('/login', (req, res) => {
     return res.status(401).json({ message: 'Wrong credentials' })
   }
 
-  res.cookie('token', logUser.userToken, {
-    httpOnly: true, // JavaScript k ní nemá přístup
-    sameSite: 'lax', // ochrana proti CSRF útokům
-  })
+  // res.cookie('token', logUser.userToken, {
+  //   httpOnly: true, // JavaScript k ní nemá přístup
+  //   sameSite: 'lax', // ochrana proti CSRF útokům
+  // })
 
-  res.status(200).json(logUser.user)
+  res.status(200).json(logUser)
 })
